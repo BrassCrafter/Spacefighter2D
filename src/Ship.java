@@ -1,19 +1,18 @@
 import GLOOP.*;
 public class Ship {
-    GLKegelstumpf leftRocket, rightRocket;
-    GLQuader body, leftWing, rightWing;
+    GLTafel ship;
     GLVektor vShip;
     Ship(double pX, double pY, double pZ, double pLength, double pWidth, double pRed, double pGreen, double pBlue){
         vShip = new GLVektor(pX, pY, pZ);
-        body = new GLQuader(vShip, pWidth/5, pLength, 2.5);
-        body.setzeFarbe(pRed, pGreen, pBlue);
-        rightWing = new GLQuader(vShip.x + pWidth/3 - pWidth/10, vShip.y - pLength*0.25 + pLength/12, vShip.z, pWidth/3, pLength/6, 2.5);
-        rightWing.setzeFarbe(pRed, pGreen, pBlue);
-        leftWing= new GLQuader(vShip.x - pWidth/3 + pWidth/10, vShip.y - pLength*0.25 + pLength/12, vShip.z, pWidth/3, pLength/6, 2.5);
-        leftRocket = new GLKegelstumpf(vShip.x - pWidth/2 + pWidth/7.5, vShip.y - pLength*0.25 + pLength/12 + pLength/8, vShip.z, pWidth/20, 0, pLength/2);
-        leftWing.setzeFarbe(pRed, pGreen, pBlue);
-        leftRocket.drehe(90, 0, 0);
-        leftRocket = new GLKegelstumpf(vShip.x + pWidth/2 - pWidth/7.5, vShip.y - pLength*0.25 + pLength/12 + pLength/8, vShip.z, pWidth/20, 0, pLength/2);
-        leftRocket.drehe(90, 0, 0);
+        ship = new GLTafel(vShip, pWidth*(1/0.931), pLength, "src/Ship2D.png");
+        ship.setzeSelbstleuchten(1, 1, 1);
+        ship.skaliere(1.25, 1, 1);
+        ship.setzeAutodrehung(true);
     }
+
+
+    public double getX(){return ship.gibX();}
+    public double getY(){return ship.gibY();}
+    public double getZ(){return ship.gibZ();}
+    public GLVektor getPos(){return vShip;}
 }
