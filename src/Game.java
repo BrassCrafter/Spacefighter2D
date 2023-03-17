@@ -14,7 +14,7 @@ boolean run = true;
 double speed = 2.5;
     Game(){
         kb = new GLTastatur();
-        reff = new GLKugel(20, -225, 0, 10);
+        reff = new GLKugel(0, 400, 0, 10);
         reff.setzeFarbe(1, 0, 0);
         cam = new GLEntwicklerkamera(720, 1080);
         cam.setzePosition(0, 0, 750);

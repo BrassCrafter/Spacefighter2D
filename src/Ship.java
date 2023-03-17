@@ -4,6 +4,7 @@ public class Ship {
     GLVektor vShip;
     Laser[] laser;
     int laserNum;
+    boolean ready = false;
     int chng = 1;
     double width, length;
     double shootrate = 0;
@@ -46,25 +47,23 @@ public class Ship {
         laser[i] = pLaser;
     }
     public void shoot(double rate_in_shots_per_second){
+        System.out.println("HELLOO");
         if(shootrate <= 0){
             for(int i = 0; i<laserNum; i++){
                 System.out.println(laser[i].getReadyState());
                 if(!laser[i].getReadyState()){
-                    laser[i].getReady(11, 0);
+                    laser[i].getReady(this.getX() + 11*chng, -195);
                     chng = -chng;
-                    System.out.println("yea");
                     break;
                 }
             }
             shootrate = 1000/rate_in_shots_per_second;
         }
-
     }
     public void fly(){
         for(int i = 0; i<laserNum; i++){
-            if(laser[i].getShotState()){
-
-                laser[i].shoot(5);
+            if(laser[i].getReadyState()){
+                laser[i].shoot(0.01);
             }
         }
     }
