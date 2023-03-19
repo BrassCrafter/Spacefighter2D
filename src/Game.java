@@ -33,15 +33,14 @@ double speed = 2.5;
                 astroid[i].knowLaser(laser[i1], i1);
             }
         }
-
-
-
         while(run){
             this.gameLoop();
         }
     }
     private void gameLoop(){
         while(!kb.esc()){
+            ship.fly();
+            ship.timer();
             if(kb.rechts()){
                 ship.moveRight(speed);
             }
@@ -49,10 +48,10 @@ double speed = 2.5;
                 ship.moveLeft(speed);
             }
             if(kb.istGedrueckt(' ')){
-                ship.shoot(10);
+                ship.getLaserState(10);
+                ship.setReady();
             }
-            ship.fly();
-            ship.timer();
+
 
             Sys.warte();
 

@@ -4,8 +4,8 @@ public class Ship {
     GLVektor vShip;
     Laser[] laser;
     int laserNum;
-    boolean ready = false;
     int chng = 1;
+    int[] ready;
     double width, length;
     double shootrate = 0;
     double border = 250;
@@ -19,6 +19,7 @@ public class Ship {
         ship.setzeAutodrehung(true);
         laserNum = pLaserNum;
         laser = new Laser[laserNum];
+        ready = new int[2];
         for(int i = 0; i<laserNum; i++){
             laser[i] = new Laser();
             laser[i].load(100, 100, 2.5, 10);
@@ -46,25 +47,28 @@ public class Ship {
     public void getKnowlage(Laser pLaser, int i){
         laser[i] = pLaser;
     }
-    public void shoot(double rate_in_shots_per_second){
+    public void getLaserState(double rate_in_shots_per_second){
         System.out.println("HELLOO");
         if(shootrate <= 0){
-            for(int i = 0; i<laserNum; i++){
-                System.out.println(laser[i].getReadyState());
+            for(int i = 0; i < laserNum; i++){
+                System.out.println(laser[i].getReadyState() + " | " + i);
                 if(!laser[i].getReadyState()){
-                    laser[i].getReady(this.getX() + 11*chng, -195);
-                    chng = -chng;
+                    ready[0] = i;
+                    ready[1] = 1;
                     break;
                 }
             }
             shootrate = 1000/rate_in_shots_per_second;
         }
     }
+    public void setReady(){
+        laser[ready[0]].getReady(ship.gibX(), -190);
+        System.out.println(ready[0]);
+    }
+
     public void fly(){
-        for(int i = 0; i<laserNum; i++){
-            if(laser[i].getReadyState()){
-                laser[i].shoot(0.01);
-            }
+        for(int i = 0; i < laserNum; i++){
+            laser[i].shoot(0.1);
         }
     }
     public void timer(){
