@@ -47,23 +47,24 @@ public class Ship {
     public void getKnowlage(Laser pLaser, int i){
         laser[i] = pLaser;
     }
-    public void getLaserState(double rate_in_shots_per_second){
-        System.out.println("HELLOO");
-        if(shootrate <= 0){
-            for(int i = 0; i < laserNum; i++){
-                System.out.println(laser[i].getReadyState() + " | " + i);
-                if(!laser[i].getReadyState()){
-                    ready[0] = i;
-                    ready[1] = 1;
+    public void shoot(double rate_in_shots_per_second){
+        if(shootrate == 0){
+            for(int i = 0; i < ready.length; i++){
+                if(!laser[i].ready){
+                    laser[i].ready = true;
+                    System.out.println(laser[i].ready + " | " + i);
                     break;
                 }
+                else{
+                    System.out.println("ready" + " | " + i);
+                }
             }
-            shootrate = 1000/rate_in_shots_per_second;
         }
-    }
-    public void setReady(){
-        laser[ready[0]].getReady(ship.gibX(), -190);
-        System.out.println(ready[0]);
+        shootrate = 1000/rate_in_shots_per_second;
+
+        for(int i = 0; i < laserNum; i++){
+        System.out.println(laser[i].ready);
+        }
     }
 
     public void fly(){

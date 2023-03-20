@@ -2,17 +2,19 @@ import GLOOP.*;
 
 public class Game {
 GLKamera cam;
+Clock clock;
 GLLicht light;
-GLKugel reff;
-Ship ship;
-Astroid astroid[];
-int astroidNum = 100;
-GLTastatur kb;
-Laser[] laser;
-int laserNum = 100;
-boolean run = true;
-double speed = 2.5;
+    GLKugel reff;
+    Ship ship;
+    Astroid astroid[];
+    int astroidNum = 100;
+    GLTastatur kb;
+    Laser[] laser;
+    int laserNum = 100;
+    boolean run = true;
+    double speed = 2.5;
     Game(){
+        clock = new Clock();
         kb = new GLTastatur();
         reff = new GLKugel(0, 400, 0, 10);
         reff.setzeFarbe(1, 0, 0);
@@ -48,10 +50,10 @@ double speed = 2.5;
                 ship.moveLeft(speed);
             }
             if(kb.istGedrueckt(' ')){
-                ship.getLaserState(10);
-                ship.setReady();
+                ship.shoot(10);
+                Sys.warte(1000);
             }
-
+            System.out.println(clock.timerToString(false, false));
 
             Sys.warte();
 
