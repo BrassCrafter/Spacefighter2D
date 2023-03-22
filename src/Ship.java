@@ -1,5 +1,6 @@
 import GLOOP.*;
 public class Ship {
+    Clock clock;
     GLTafel ship;
     GLVektor vShip;
     Laser[] laser;
@@ -10,10 +11,11 @@ public class Ship {
     double shootrate = 0;
     double border = 250;
     Ship(double pX, double pY, double pZ, double pLength, double pWidth, double pRed, double pGreen, double pBlue, int pLaserNum){
+        clock = new Clock();
         width = pWidth / 0.93;
         length = pLength;
         vShip = new GLVektor(pX, pY, pZ);
-        ship = new GLTafel(vShip, width, length, "src/Ship2D.png");
+        ship = new GLTafel(vShip, width, length, "src/img/Ship2D.png");
         ship.setzeSelbstleuchten(1, 1, 1);
         ship.skaliere(1.25, 1, 1);
         ship.setzeAutodrehung(true);
@@ -47,23 +49,15 @@ public class Ship {
     public void getKnowlage(Laser pLaser, int i){
         laser[i] = pLaser;
     }
-    public void shoot(double rate_in_shots_per_second){
-        if(shootrate == 0){
-            for(int i = 0; i < ready.length; i++){
-                if(!laser[i].ready){
-                    laser[i].ready = true;
-                    System.out.println(laser[i].ready + " | " + i);
+    public void shoot(){
+            for(int i = 0; i < laserNum; i++){
+                System.out.println(laser[i].getPosition().gibX() + " " + laser[i].getOffPosition().gibX());
+                if(laser[i].getPosition().gibX() == laser[i].getOffPosition().gibX()){
+                    laser[i].setPosition(this.getX(), this.getY() + length/2);
+                    System.out.println("Laser");
                     break;
                 }
-                else{
-                    System.out.println("ready" + " | " + i);
-                }
-            }
-        }
-        shootrate = 1000/rate_in_shots_per_second;
 
-        for(int i = 0; i < laserNum; i++){
-        System.out.println(laser[i].ready);
         }
     }
 
