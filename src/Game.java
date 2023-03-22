@@ -55,6 +55,7 @@ GLLicht light;
             if(kb.istGedrueckt(' ') && clock.coolDownOver()){
                 ship.shoot();
                 clock.resetCoolDown(10000);
+                //hier scheint er nicht rauszugehen
             }
             else{
                 clock.coolDown();
