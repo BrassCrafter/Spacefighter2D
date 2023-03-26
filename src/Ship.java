@@ -8,6 +8,7 @@ public class Ship {
     int chng = 1;
     int[] ready;
     double width, length;
+    double bulletSpeed = 1;
     double shootrate = 0;
     double border = 250;
     Ship(double pX, double pY, double pZ, double pLength, double pWidth, double pRed, double pGreen, double pBlue, int pLaserNum){
@@ -24,9 +25,8 @@ public class Ship {
         ready = new int[2];
         for(int i = 0; i<laserNum; i++){
             laser[i] = new Laser();
-            laser[i].load(100, 100, 2.5, 10);
+            laser[i].load(-200000000, 1000000, 2.5, 10);
         }
-        //laser[1].getReady(1, 1);
     }
 
 
@@ -51,9 +51,11 @@ public class Ship {
     }
     public void shoot(){
             for(int i = 0; i < laserNum; i++){
+                //laser[i].setPosition(100, 100);
                 System.out.println(laser[i].getPosition().gibX() + " " + laser[i].getOffPosition().gibX());
-                if(laser[i].getPosition().gibX() == laser[i].getOffPosition().gibX()){
-                    laser[i].setPosition(this.getX(), this.getY() + length/2);
+                if(laser[i].getPosition().gibX() == laser[i].getOffPosition().gibX() && laser[i].getPosition().gibY() == laser[i].getOffPosition().gibY()){
+                    laser[i].setPosition(this.getX(), this.getY() + this.length/2);
+                    System.out.println(this.getY());
                     System.out.println("Laser");
                     break;
                 }
@@ -63,13 +65,13 @@ public class Ship {
 
     public void fly(){
         for(int i = 0; i < laserNum; i++){
-            laser[i].shoot(0.1);
+            laser[i].shoot(bulletSpeed);
         }
     }
     public void timer(){
         if(shootrate>0){
             shootrate--;
-            System.out.println(shootrate);
+            //System.out.println(shootrate);
         }
     }
 }
