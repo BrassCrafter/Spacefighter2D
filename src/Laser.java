@@ -12,7 +12,7 @@ public class Laser {
     }
     public void shoot(double pSpeed){
         if(!(vPosition.x == vOffPosition.x && vPosition.y == vOffPosition.y)){
-            System.out.println("flies");
+            //System.out.println("flies");
             laser.verschiebe(0, pSpeed, 0);
         }
     }

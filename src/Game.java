@@ -12,6 +12,7 @@ GLLicht light;
     double maxHight = 450;
     GLTastatur kb;
     Laser[] laser;
+    Menu menu;
     int laserNum = 100;
     boolean run = true;
     double speed = 2.5;
@@ -33,6 +34,7 @@ GLLicht light;
         ship = new Ship(0, -200, 0, 50, 40, 1, 1, 0, laserNum);
         astroid = new Astroid[astroidNum];
         laser = new Laser[laserNum];
+        menu = new Menu();
 
         for(int i = 0; i<astroidNum; i++){
             astroid[i] = new Astroid(laserNum);
