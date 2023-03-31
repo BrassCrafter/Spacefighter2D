@@ -1,14 +1,29 @@
 import GLOOP.*;
 public class UI {
-    GLTafel resetButton, backButton, quitButton;
+    GLTastatur kb;
+    GLTafel resetButton, backButton, quitButton, stopWatch;
+    Clock stopWatchClock;
     int tempButton;
     UI(){
         resetButton = new GLTafel(0, 0, 0, 75, 75*0.75, "src/img/ResetOff.png");
         resetButton.setzeSichtbarkeit(false);
-        backButton = new GLTafel(0, 250, 0, 75, 75*0.75, "src/img/BackOff.png");
+        backButton = new GLTafel(0, 75, 0, 75, 75*0.75, "src/img/BackOff.png");
         backButton.setzeSichtbarkeit(false);
-        quitButton = new GLTafel(0, -200, 0, 75, 75*0.75, "src/img/QuitOff.png");
+        quitButton = new GLTafel(0, -75, 0, 75, 75*0.75, "src/img/QuitOff.png");
         quitButton.setzeSichtbarkeit(false);
+        stopWatchClock = new Clock();
+        stopWatch = new GLTafel(0, 300, 0, 150, 150*0.75, "src/img/ButtonTemplate.png");
+        stopWatch.setzeTextfarbe(1, 0, 0);
+        kb = new GLTastatur();
+    }
+    public void updateStopwatch(){
+        if(kb.istGedrueckt('r')){stopWatch.setzeText(stopWatchClock.stopWatchToString(false, true), 20);}
+        else if (kb.istGedrueckt('t')){
+            stopWatch.setzeText(stopWatchClock.stopWatchToString(true, false), 20);
+        }
+        else{
+            stopWatch.setzeText(stopWatchClock.stopWatchToString(false, false), 20);
+        }
     }
     public void startMenu(){
         resetButton.setzeSichtbarkeit(true);
