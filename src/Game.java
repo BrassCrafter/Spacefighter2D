@@ -2,8 +2,9 @@ import GLOOP.*;
 
 public class Game {
 GLKamera cam;
-Clock clock;
+Clock gunTimer, menuTimer;
 GLLicht light;
+GLHimmel sky;
     GLKugel reff1, reff2, reff3;
     GLTafel stopWatch, time, cooldown;
     Ship ship;
@@ -12,12 +13,15 @@ GLLicht light;
     double maxHight = 450;
     GLTastatur kb;
     Laser[] laser;
-    Menu menu;
+    UI ui;
     int laserNum = 100;
-    boolean run = true;
+    int menuButtonNum = 2;
+    boolean runGame = true, runMenu = false, run = true;
     double speed = 2.5;
     Game(){
-        clock = new Clock();
+        sky = new GLHimmel("src/img/bg.png");
+        gunTimer = new Clock();
+        menuTimer = new Clock();
         stopWatch = new GLTafel(0, 0, 0, 40, 20);
         stopWatch.setzeTextfarbe(1, 0, 1);
         kb = new GLTastatur();
@@ -34,7 +38,7 @@ GLLicht light;
         ship = new Ship(0, -200, 0, 50, 40, 1, 1, 0, laserNum);
         astroid = new Astroid[astroidNum];
         laser = new Laser[laserNum];
-        menu = new Menu();
+        ui = new UI();
 
         for(int i = 0; i<astroidNum; i++){
             astroid[i] = new Astroid(laserNum);
@@ -49,10 +53,14 @@ GLLicht light;
         }
         while(run){
             this.gameLoop();
+            this.menuLoop();
         }
     }
     private void gameLoop(){
-        while(!kb.esc()){
+        menuTimer.resetCoolDown(100);
+        menuTimer.coolDown();
+        while(runGame){
+            menuTimer.coolDown();
             ship.timer();
             if(kb.rechts()){
                 ship.moveRight(speed);
@@ -60,19 +68,19 @@ GLLicht light;
             if(kb.links()){
                 ship.moveLeft(speed);
             }
-            if(clock.coolDownOver() && kb.istGedrueckt(' ')){
-                clock.resetCoolDown(50);
+            if(gunTimer.coolDownOver() && kb.istGedrueckt(' ')){
+                gunTimer.resetCoolDown(50);
                 ship.shoot();
                 //hier scheint er nicht rauszugehen
             }
             ship.fly();
-            clock.coolDown();
-            if(kb.istGedrueckt('r')){stopWatch.setzeText(clock.stopWatchToString(false, true), 10);}
+            gunTimer.coolDown();
+            if(kb.istGedrueckt('r')){stopWatch.setzeText(gunTimer.stopWatchToString(false, true), 10);}
             else if (kb.istGedrueckt('t')){
-                stopWatch.setzeText(clock.stopWatchToString(true, false), 10);
+                stopWatch.setzeText(gunTimer.stopWatchToString(true, false), 10);
             }
             else{
-                stopWatch.setzeText(clock.stopWatchToString(false, false), 10);
+                stopWatch.setzeText(gunTimer.stopWatchToString(false, false), 10);
             }
 
             for(int i = 0; i < astroidNum; i++){
@@ -87,7 +95,38 @@ GLLicht light;
             }
 
             Sys.warte();
+            if(kb.esc() && menuTimer.coolDownOver){
+                System.out.println("YEA");
+                runGame = false;
+                runMenu = true;
+                menuTimer.resetCoolDown(5);
+            }
+        }
+    }
+    public void menuLoop(){
+        ui.startMenu();
+        ui.updateMenu(2);
+        menuTimer.coolDown();
+        while(runMenu){
+            menuTimer.coolDown();
+            System.out.println(menuButtonNum);
+            if(kb.oben() && menuButtonNum < 2){
+                menuButtonNum ++;
+                ui.updateMenu(menuButtonNum);
+            }
+            if(kb.unten() && menuButtonNum > 0){
+                menuButtonNum --;
+                ui.updateMenu(menuButtonNum);
+            }
 
+            if(kb.esc() && menuTimer.coolDownOver){
+                ui.endMenu();
+                System.out.println("YEE");
+                runMenu = false;
+                runGame = true;
+            }
+            System.out.println("BREAK");
+            Sys.warte(100);
         }
     }
 }
