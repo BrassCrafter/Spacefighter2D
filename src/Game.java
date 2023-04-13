@@ -10,12 +10,13 @@ Ship ship;
 Astroid[] astroid;
 int astroidNum = 500;
 double maxHight = 450;
+SoundPlayer soundPlayer;
 GLTastatur kb;
 Laser[] laser;
 UI ui;
 int laserNum = 100;
 int menuButtonNum = 2;
-boolean runGame = true, runMenu = false, run = true;
+boolean runGame = true, runMenu = false, run = true, runDeathMenu = false;
 double speed = 1.5;
     Game(){
         sky = new GLHimmel("src/img/bg.png");
@@ -36,6 +37,8 @@ double speed = 1.5;
         astroid = new Astroid[astroidNum];
         laser = new Laser[laserNum];
         ui = new UI();
+        soundPlayer = new SoundPlayer();
+        soundPlayer.playSong();
 
         for(int i = 0; i<astroid.length; i++){
             astroid[i] = new Astroid(ship, laser, 10, 0.5);
@@ -49,7 +52,10 @@ double speed = 1.5;
         }
         while(run){
             this.gameLoop();
-            this.menuLoop();
+            if(runMenu){
+                this.menuLoop();
+            }
+
         }
     }
     private void gameLoop(){
@@ -67,8 +73,9 @@ double speed = 1.5;
                 ship.moveLeft(speed);
             }
             if(gunTimer.coolDownOver() && kb.istGedrueckt(' ')){
-                gunTimer.resetCoolDown(10);
+                gunTimer.resetCoolDown(50);
                 ship.shoot();
+                soundPlayer.playLaserSound();
                 //hier scheint er nicht rauszugehen
             }
             ship.fly();
@@ -83,12 +90,17 @@ double speed = 1.5;
                     //Sys.warte(1000);
                 }
             }
+
             if(kb.esc() && menuTimer.coolDownOver){
                 System.out.println("YEA");
                 runGame = false;
                 runMenu = true;
                 menuTimer.resetCoolDown(7);
-
+            }
+            if(ship.doesSayStop()){
+                runGame = false;
+                runDeathMenu = true;
+                menuTimer.resetCoolDown(7);
             }
             ship.updateVectors();
             for(int i = 0; i < astroid.length; i++){

@@ -10,6 +10,7 @@ public class Astroid {
     double radius;
     double r, s;
     double speed;
+    boolean STOP = false;
 
     Astroid(Ship pShip, Laser[] pLaser, double pRadius, double pSpeed) {
         vAstroid = new GLVektor(0, 0, 0);
@@ -54,11 +55,12 @@ public class Astroid {
 
     public void update() {
         this.fallDown(speed);
+        this.detectCollisionWithLaser();
         if (this.detectCollisionWithShip(radius)) {
             System.out.println("HIT");
+            ship.explode();
             this.reset();
         }
-        this.detectCollisionWithLaser();
     }
 
     public void reset() {

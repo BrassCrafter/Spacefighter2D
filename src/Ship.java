@@ -11,6 +11,8 @@ public class Ship {
     double bulletSpeed = 5;
     double shootrate;
     double border = 250;
+    boolean STOP = false;
+    SoundPlayer soundPlayer;
 
     Ship(double pX, double pY, double pZ, double pLength, double pWidth, double pRed, double pGreen, double pBlue, int pLaserNum){
         clock = new Clock();
@@ -23,6 +25,7 @@ public class Ship {
         vE = new GLVektor(pX - width/4, pY + length/4, 0);
         vF = new GLVektor(pX + width/4, pY + length/4, 0);
         ship = new GLTafel(vShip, width, length, "src/img/Ship2D.png");
+        soundPlayer = new SoundPlayer();
 
         ship.setzeSelbstleuchten(1, 1, 1);
         ship.skaliere(1.25, 1, 1);
@@ -119,5 +122,13 @@ public class Ship {
     }
     public int getScore(){
         return score;
+    }
+    public void explode(){
+        ship.setzeTextur("src/img/Explosion.png");
+        soundPlayer.playBOOM();
+        STOP = true;
+    }
+    public boolean doesSayStop(){
+        return STOP;
     }
 }
