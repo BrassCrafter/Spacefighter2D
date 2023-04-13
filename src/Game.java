@@ -5,18 +5,18 @@ GLKamera cam;
 Clock gunTimer, menuTimer;
 GLLicht light;
 GLHimmel sky;
-    GLKugel reff1, reff2, reff3;
-        Ship ship;
-    Astroid astroid[];
-    int astroidNum = 100;
-    double maxHight = 450;
-    GLTastatur kb;
-    Laser[] laser;
-    UI ui;
-    int laserNum = 100;
-    int menuButtonNum = 2;
-    boolean runGame = true, runMenu = false, run = true;
-    double speed = 1;
+GLKugel reff1, reff2, reff3;
+Ship ship;
+Astroid[] astroid;
+int astroidNum = 500;
+double maxHight = 450;
+GLTastatur kb;
+Laser[] laser;
+UI ui;
+int laserNum = 100;
+int menuButtonNum = 2;
+boolean runGame = true, runMenu = false, run = true;
+double speed = 1.5;
     Game(){
         sky = new GLHimmel("src/img/bg.png");
         gunTimer = new Clock();
@@ -32,20 +32,19 @@ GLHimmel sky;
         cam.setzePosition(0, 0, 750);
         cam.setzeBlickpunkt(0, 0, 0);
         light = new GLLicht();
-        ship = new Ship(0, -200, 0, 50, 40, 1, 1, 0, laserNum);
+        ship = new Ship(0, -200, 0, 40, 30, 1, 1, 0, laserNum);
         astroid = new Astroid[astroidNum];
         laser = new Laser[laserNum];
         ui = new UI();
 
-        for(int i = 0; i<astroidNum; i++){
-            astroid[i] = new Astroid(laserNum);
-            astroid[i].knowShip(ship);
-            for(int i1 = 0; i1<laserNum; i1++) {
+        for(int i = 0; i<astroid.length; i++){
+            astroid[i] = new Astroid(ship, laser, 10, 0.5);
+            for(int i1 = 0; i1<laser.length; i1++) {
                 laser[i1] = ship.laser[i1];
                 //System.out.println("1");
                 ship.getKnowlage(laser[i1], i1);
                 System.out.println(laser[i1] + " | " + i1);
-                astroid[i].knowLaser(laser[i1], i1);
+                
             }
         }
         while(run){
@@ -58,6 +57,7 @@ GLHimmel sky;
         menuTimer.coolDown();
         while(runGame){
             ui.updateStopwatch();
+            ui.updateScoreBoard(ship.getScore());
             menuTimer.coolDown();
             ship.timer();
             if(kb.rechts()){
@@ -67,7 +67,7 @@ GLHimmel sky;
                 ship.moveLeft(speed);
             }
             if(gunTimer.coolDownOver() && kb.istGedrueckt(' ')){
-                gunTimer.resetCoolDown(100);
+                gunTimer.resetCoolDown(10);
                 ship.shoot();
                 //hier scheint er nicht rauszugehen
             }
@@ -83,23 +83,28 @@ GLHimmel sky;
                     //Sys.warte(1000);
                 }
             }
-
-            Sys.warte();
             if(kb.esc() && menuTimer.coolDownOver){
                 System.out.println("YEA");
                 runGame = false;
                 runMenu = true;
-                menuTimer.resetCoolDown(5);
+                menuTimer.resetCoolDown(7);
+
             }
+            ship.updateVectors();
+            for(int i = 0; i < astroid.length; i++){
+                astroid[i].update();
+            }
+            Sys.warte();
         }
     }
     public void menuLoop(){
         ui.startMenu();
-        ui.updateMenu(2);
+        ui.updateMenu(menuButtonNum);
         menuTimer.coolDown();
         while(runMenu){
             menuTimer.coolDown();
             System.out.println(menuButtonNum);
+            //Moving up and down in the menu
             if(kb.oben() && menuButtonNum < 2){
                 menuButtonNum ++;
                 ui.updateMenu(menuButtonNum);
@@ -107,6 +112,29 @@ GLHimmel sky;
             if(kb.unten() && menuButtonNum > 0){
                 menuButtonNum --;
                 ui.updateMenu(menuButtonNum);
+            }
+            //Selecting an option
+            switch(menuButtonNum){
+                case 0:
+                    //"Quit"
+                    if(kb.enter()){
+                        Sys.beenden();
+                    }
+                case 1:
+                    //"Reset"
+                    if(kb.enter()){
+                        this.reset();
+                        ui.endMenu();
+                        runMenu = false;
+                        runGame = true;
+                    }
+                case 2:
+                    if(kb.enter()){
+                        ui.endMenu();
+                        runMenu = false;
+                        runGame = true;
+                    }
+
             }
 
             if(kb.esc() && menuTimer.coolDownOver){
@@ -116,7 +144,17 @@ GLHimmel sky;
                 runGame = true;
             }
             System.out.println("BREAK");
-            Sys.warte(100);
+            Sys.warte(60);
         }
+        menuButtonNum = 2;
+    }
+    public void reset(){
+        for(int i = 0; i < astroid.length; i++){
+            astroid[i].reset();
+        }
+        for(int i = 0; i < laser.length; i++){
+            laser[i].reset();
+        }
+        ui.resetStopwatch();
     }
 }

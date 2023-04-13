@@ -1,19 +1,22 @@
 import GLOOP.*;
 public class UI {
     GLTastatur kb;
-    GLTafel resetButton, backButton, quitButton, stopWatch;
+    GLTafel resetButton, backButton, quitButton, stopWatch, scoreBoard;
     Clock stopWatchClock;
     int tempButton;
     UI(){
-        resetButton = new GLTafel(0, 0, 0, 75, 75*0.75, "src/img/ResetOff.png");
+        resetButton = new GLTafel(0, 0, 20, 75, 75*0.75, "src/img/ResetOff.png");
         resetButton.setzeSichtbarkeit(false);
-        backButton = new GLTafel(0, 75, 0, 75, 75*0.75, "src/img/BackOff.png");
+        backButton = new GLTafel(0, 75, 20, 75, 75*0.75, "src/img/BackOff.png");
         backButton.setzeSichtbarkeit(false);
-        quitButton = new GLTafel(0, -75, 0, 75, 75*0.75, "src/img/QuitOff.png");
+        quitButton = new GLTafel(0, -75, 20, 75, 75*0.75, "src/img/QuitOff.png");
         quitButton.setzeSichtbarkeit(false);
         stopWatchClock = new Clock();
-        stopWatch = new GLTafel(0, 300, 0, 150, 150*0.75, "src/img/ButtonTemplate.png");
+        stopWatch = new GLTafel(0, 400, 20, 150, 150*0.75, "src/img/invisible.png");
         stopWatch.setzeTextfarbe(1, 0, 0);
+        scoreBoard = new GLTafel(0, 200, 20, 150, 150*0.75, "src/img/invisible.png");
+        scoreBoard.setzeAutodrehung(true);
+        scoreBoard.setzeTextfarbe(1, 1, 0);
         kb = new GLTastatur();
     }
     public void updateStopwatch(){
@@ -24,6 +27,9 @@ public class UI {
         else{
             stopWatch.setzeText(stopWatchClock.stopWatchToString(false, false), 20);
         }
+    }
+    public void resetStopwatch(){
+        stopWatch.setzeText(stopWatchClock.stopWatchToString(false, true), 20);
     }
     public void startMenu(){
         resetButton.setzeSichtbarkeit(true);
@@ -65,5 +71,9 @@ public class UI {
             case 1:
                 resetButton.setzeTextur("src/img/ResetOff.png");
         }
+    }
+    public void updateScoreBoard(int pScore){
+        int score = pScore + stopWatchClock.getTimeBasedScore();
+        scoreBoard.setzeText("Score: " + score, 50);
     }
 }

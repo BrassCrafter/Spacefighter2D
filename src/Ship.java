@@ -2,21 +2,28 @@ import GLOOP.*;
 public class Ship {
     Clock clock;
     GLTafel ship;
-    GLVektor vShip;
+    GLVektor vShip, vA, vB, vC, vE, vF;
     Laser[] laser;
     int laserNum;
-    int chng = 1;
+    int score = 0;
     int[] ready;
     double width, length;
-    double bulletSpeed = 1;
-    double shootrate = 0;
+    double bulletSpeed = 5;
+    double shootrate;
     double border = 250;
+
     Ship(double pX, double pY, double pZ, double pLength, double pWidth, double pRed, double pGreen, double pBlue, int pLaserNum){
         clock = new Clock();
         width = pWidth / 0.93;
         length = pLength;
         vShip = new GLVektor(pX, pY, pZ);
+        vA = new GLVektor(pX - width/2, pY - length/2, 0);
+        vB = new GLVektor(pX + width/2, pY - length/2, 0);
+        vC = new GLVektor(pX, pY + length/2, 0);
+        vE = new GLVektor(pX - width/4, pY + length/4, 0);
+        vF = new GLVektor(pX + width/4, pY + length/4, 0);
         ship = new GLTafel(vShip, width, length, "src/img/Ship2D.png");
+
         ship.setzeSelbstleuchten(1, 1, 1);
         ship.skaliere(1.25, 1, 1);
         ship.setzeAutodrehung(true);
@@ -73,5 +80,44 @@ public class Ship {
             shootrate--;
             //System.out.println(shootrate);
         }
+    }
+    public void updateVectors(){
+        vShip = ship.gibPosition();
+        vA = new GLVektor(ship.gibX() - width/2, ship.gibY() - length/2, 0);
+        vB = new GLVektor(ship.gibX() + width/2, ship.gibY() - length/2, 0);
+        vC = new GLVektor(ship.gibX(), ship.gibY() + length/2, 0);
+        vE = new GLVektor(ship.gibX() - width/4, ship.gibY() + length/4, 0);
+        vF = new GLVektor(ship.gibX() + width/4, ship.gibY() + length/4, 0);
+
+    }
+    public GLVektor getvA(){
+        this.updateVectors();
+        return vA;
+    }
+    public GLVektor getvB(){
+        this.updateVectors();
+        return vB;
+    }
+    public GLVektor getvC(){
+        this.updateVectors();
+        return vC;
+    }
+    public GLVektor getvE(){
+        this.updateVectors();
+        return vC;
+    }
+    public GLVektor getvF(){
+        this.updateVectors();
+        return vC;
+    }
+    public GLVektor getvShip(){
+        this.updateVectors();
+        return vShip;
+    }
+    public void addAPointToScore(){
+        score++;
+    }
+    public int getScore(){
+        return score;
     }
 }
