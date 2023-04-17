@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class UI {
     GLTastatur kb;
-    GLTafel resetButton, backButton, quitButton, stopWatch, scoreBoard, highScoreBoard;
+    GLTafel resetButton, backButton, quitButton, stopWatch, scoreBoard, highScoreBoard, volumeBar;
     Clock stopWatchClock;
     int tempButton;
     int score;
@@ -26,6 +26,9 @@ public class UI {
         highScoreBoard.setzeAutodrehung(true);
         highScoreBoard.setzeTextfarbe(1, 0, 0);
         highScoreFile = new TextFileReaderWriter("src/HighScore.txt");
+        volumeBar = new GLTafel(0, -400, 20, 150, 150*0.75, "src/img/BarAt100.png");
+        volumeBar.setzeAutodrehung(true);
+        volumeBar.setzeSichtbarkeit(false);
 
         kb = new GLTastatur();
     }
@@ -91,7 +94,6 @@ public class UI {
     public void startDeathMenu(){
         resetButton.setzeSichtbarkeit(true);
         quitButton.setzeSichtbarkeit(true);
-        backButton.setzeSichtbarkeit(false);
         resetButton.setzeTextur("src/img/ResetOn.png");
     }
     public void updateDeathMenu(int pButton){
@@ -116,5 +118,62 @@ public class UI {
     }
     public int getScore(){
         return score;
+    }
+    public void startSettingsMenu(){
+        volumeBar.setzeSichtbarkeit(true);
+        backButton.setzeSichtbarkeit(true);
+        resetButton.setzeTextur("src/img/BackOn.png");
+    }
+    public void updateSettingsMenu(int pButton, int pVolume){
+        switch(pButton){
+            case 0:
+                switch (pVolume){
+                    case 0:
+                        volumeBar.setzeTextur("src/img/BarAt0.png");
+                        break;
+                    case 1:
+                        volumeBar.setzeTextur("src/img/BarAt10.png");
+                        break;
+                    case 2:
+                        volumeBar.setzeTextur("src/img/BarAt20.png");
+                        break;
+                    case 3:
+                        volumeBar.setzeTextur("src/img/BarAt30.png");
+                        break;
+                    case 4:
+                        volumeBar.setzeTextur("src/img/BarAt40.png");
+                        break;
+                    case 5:
+                        volumeBar.setzeTextur("src/img/BarAt50.png");
+                        break;
+                    case 6:
+                        volumeBar.setzeTextur("src/img/BarAt60.png");
+                        break;
+                    case 7:
+                        volumeBar.setzeTextur("src/img/BarAt70.png");
+                        break;
+                    case 8:
+                        volumeBar.setzeTextur("src/img/BarAt80.png");
+                        break;
+                    case 9:
+                        volumeBar.setzeTextur("src/img/BarAt90.png");
+                        break;
+                    case 10:
+                        volumeBar.setzeTextur("src/img/BarAt100.png");
+                        break;
+                }
+                resetButton.setzeTextur("src/img/ResetOff.png");
+                quitButton.setzeTextur("src/img/QuitOn.png");
+                tempButton = pButton;
+                break;
+            case 1:
+                quitButton.setzeTextur("src/img/QuitOff.png");
+                break;
+        }
+
+    }
+    public void endSettingsMenu(){
+        resetButton.setzeSichtbarkeit(false);
+        quitButton.setzeSichtbarkeit(false);
     }
 }

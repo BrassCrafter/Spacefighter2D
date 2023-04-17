@@ -18,8 +18,8 @@ GLTastatur kb;
 Laser[] laser;
 UI ui;
 int laserNum = 100;
-int menuButtonNum = 2, deathMenuButtonNum = 1;
-boolean runGame = true, runMenu = false, run = true, runDeathMenu = false;
+int menuButtonNum = 2, deathMenuButtonNum = 1, settingsMenuButtonNum = 1;
+boolean runGame = true, runMenu = false, run = true, runDeathMenu = false, runSettingsMenu = false;
 double speed = 0.8;
 TextFileReaderWriter highScoreFile;
 int highScore;
@@ -61,6 +61,9 @@ int highScore;
             this.gameLoop();
             if(runMenu){
                 this.menuLoop();
+            }
+            if(runSettingsMenu){
+                this.settingsMenuLoop();
             }
             if(runDeathMenu){
                 this.deathMenuLoop();
@@ -221,5 +224,42 @@ int highScore;
             Sys.warte(60);
         }
         deathMenuButtonNum = 1;
+    }
+    public void settingsMenuLoop(){
+        ui.startSettingsMenu();
+        ui.updateSettingsMenu(settingsMenuButtonNum, volume);
+        menuTimer.coolDown();
+        while(runSettingsMenu){
+            menuTimer.coolDown();
+            System.out.println(settingsMenuButtonNum);
+            //Moving up and down in the menu
+            if(kb.oben() && settingsMenuButtonNum < 1){
+                settingsMenuButtonNum ++;
+                ui.updateMenu(settingsMenuButtonNum);
+            }
+            if(kb.unten() && settingsMenuButtonNum > 0){
+                settingsMenuButtonNum --;
+                ui.updateMenu(settingsMenuButtonNum);
+            }
+            //Selecting an option
+            switch(settingsMenuButtonNum){
+                case 0:
+                    //"Quit"
+                    if(kb.enter()){
+                        Sys.beenden();
+                    }
+                case 1:
+                    //"Reset"
+                    if(kb.enter()){
+                        this.reset();
+                        ui.endSettingsMenu();
+                        runSettingsMenu = false;
+                        runMenu = true;
+                    }
+            }
+            System.out.println("BREAK");
+            Sys.warte(60);
+        }
+        settingsMenuButtonNum = 0;
     }
 }
