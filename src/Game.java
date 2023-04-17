@@ -165,7 +165,7 @@ int highScore;
                     }
 
             }
-
+/
             if(kb.esc() && menuTimer.coolDownOver){
                 ui.endMenu();
                 System.out.println("YEE");
