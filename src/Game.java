@@ -1,4 +1,7 @@
 import GLOOP.*;
+import com.sun.jdi.IntegerValue;
+
+import java.io.IOException;
 
 public class Game {
 GLKamera cam;
@@ -17,8 +20,10 @@ UI ui;
 int laserNum = 100;
 int menuButtonNum = 2, deathMenuButtonNum = 1;
 boolean runGame = true, runMenu = false, run = true, runDeathMenu = false;
-double speed = 1.5;
-    Game(){
+double speed = 0.8;
+TextFileReaderWriter highScoreFile;
+int highScore;
+    Game() throws IOException {
         sky = new GLHimmel("src/img/bg.png");
         gunTimer = new Clock();
         menuTimer = new Clock();
@@ -39,6 +44,8 @@ double speed = 1.5;
         ui = new UI();
         soundPlayer = new SoundPlayer();
         soundPlayer.playSong();
+        highScoreFile = new TextFileReaderWriter("src/HighScore.txt");
+        highScore = Integer.parseInt(highScoreFile.readScoreLine());
 
         for(int i = 0; i<astroid.length; i++){
             astroid[i] = new Astroid(ship, laser, 10, 0.5);
@@ -61,7 +68,7 @@ double speed = 1.5;
 
         }
     }
-    private void gameLoop(){
+    private void gameLoop() throws IOException {
         menuTimer.resetCoolDown(100);
         menuTimer.coolDown();
         while(runGame){
@@ -110,6 +117,10 @@ double speed = 1.5;
                 astroid[i].update();
             }
             Sys.warte();
+        }
+        if(highScore < ui.getScore()){
+            highScore = ui.getScore();
+            highScoreFile.writeFile(Integer.toString(highScore));
         }
     }
     public void menuLoop(){

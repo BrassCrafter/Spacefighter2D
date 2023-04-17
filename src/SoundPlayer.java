@@ -16,7 +16,7 @@ public class SoundPlayer {
                         FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 
 
-                        gainControl.setValue(gainControl.getValue() - 10.0f);
+                        gainControl.setValue(gainControl.getValue() - 15.0f);
 
 
 

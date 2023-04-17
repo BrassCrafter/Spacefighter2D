@@ -1,9 +1,14 @@
 import GLOOP.*;
+
+import java.io.IOException;
+
 public class UI {
     GLTastatur kb;
-    GLTafel resetButton, backButton, quitButton, stopWatch, scoreBoard;
+    GLTafel resetButton, backButton, quitButton, stopWatch, scoreBoard, highScoreBoard;
     Clock stopWatchClock;
     int tempButton;
+    int score;
+    TextFileReaderWriter highScoreFile;
     UI(){
         resetButton = new GLTafel(0, 0, 20, 75, 75*0.75, "src/img/ResetOff.png");
         resetButton.setzeSichtbarkeit(false);
@@ -17,6 +22,11 @@ public class UI {
         scoreBoard = new GLTafel(0, 200, 20, 150, 150*0.75, "src/img/invisible.png");
         scoreBoard.setzeAutodrehung(true);
         scoreBoard.setzeTextfarbe(1, 1, 0);
+        highScoreBoard = new GLTafel(0, 300, 20, 150, 150*0.75, "src/img/invisible.png");
+        highScoreBoard.setzeAutodrehung(true);
+        highScoreBoard.setzeTextfarbe(1, 0, 0);
+        highScoreFile = new TextFileReaderWriter("src/HighScore.txt");
+
         kb = new GLTastatur();
     }
     public void updateStopwatch(){
@@ -72,9 +82,11 @@ public class UI {
                 resetButton.setzeTextur("src/img/ResetOff.png");
         }
     }
-    public void updateScoreBoard(int pScore){
-        int score = pScore + stopWatchClock.getTimeBasedScore();
+    public void updateScoreBoard(int pScore) throws IOException {
+        int boardScore = pScore + stopWatchClock.getTimeBasedScore();
         scoreBoard.setzeText("Score: " + score, 50);
+        score = boardScore;
+        highScoreBoard.setzeText("High Score: " + highScoreFile.readScoreLine(), 50);
     }
     public void startDeathMenu(){
         resetButton.setzeSichtbarkeit(true);
@@ -101,5 +113,8 @@ public class UI {
     }
     public void resetScore(){
         stopWatchClock.resetTimeBasedScore();
+    }
+    public int getScore(){
+        return score;
     }
 }
