@@ -76,10 +76,10 @@ int highScore;
             ui.updateScoreBoard(ship.getScore());
             menuTimer.coolDown();
             ship.timer();
-            if(kb.rechts()){
+            if(kb.rechts() || kb.istGedrueckt('d')){
                 ship.moveRight(speed);
             }
-            if(kb.links()){
+            if(kb.links() || kb.istGedrueckt('a')){
                 ship.moveLeft(speed);
             }
             if(gunTimer.coolDownOver() && kb.istGedrueckt(' ')){
