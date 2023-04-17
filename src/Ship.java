@@ -93,6 +93,13 @@ public class Ship {
         vF = new GLVektor(ship.gibX() + width/4, ship.gibY() + length/4, 0);
 
     }
+    public void reset(){
+        ship.setzeTextur("src/img/Ship2D.png");
+        ship.setzePosition(0, -200, 0);
+        this.updateVectors();
+        STOP = false;
+        this.resetScore();
+    }
     public GLVektor getvA(){
         this.updateVectors();
         return vA;
@@ -130,5 +137,8 @@ public class Ship {
     }
     public boolean doesSayStop(){
         return STOP;
+    }
+    public void resetScore(){
+        score = 0;
     }
 }

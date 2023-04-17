@@ -15,7 +15,7 @@ GLTastatur kb;
 Laser[] laser;
 UI ui;
 int laserNum = 100;
-int menuButtonNum = 2;
+int menuButtonNum = 2, deathMenuButtonNum = 1;
 boolean runGame = true, runMenu = false, run = true, runDeathMenu = false;
 double speed = 1.5;
     Game(){
@@ -54,6 +54,9 @@ double speed = 1.5;
             this.gameLoop();
             if(runMenu){
                 this.menuLoop();
+            }
+            if(runDeathMenu){
+                this.deathMenuLoop();
             }
 
         }
@@ -167,6 +170,45 @@ double speed = 1.5;
         for(int i = 0; i < laser.length; i++){
             laser[i].reset();
         }
+        ship.reset();
         ui.resetStopwatch();
+        ui.resetScore();
+    }
+    public void deathMenuLoop(){
+        ui.startDeathMenu();
+        ui.updateDeathMenu(deathMenuButtonNum);
+        menuTimer.coolDown();
+        while(runDeathMenu){
+            menuTimer.coolDown();
+            System.out.println(deathMenuButtonNum);
+            //Moving up and down in the menu
+            if(kb.oben() && deathMenuButtonNum < 1){
+                deathMenuButtonNum ++;
+                ui.updateMenu(deathMenuButtonNum);
+            }
+            if(kb.unten() && deathMenuButtonNum > 0){
+                deathMenuButtonNum --;
+                ui.updateMenu(deathMenuButtonNum);
+            }
+            //Selecting an option
+            switch(deathMenuButtonNum){
+                case 0:
+                    //"Quit"
+                    if(kb.enter()){
+                        Sys.beenden();
+                    }
+                case 1:
+                    //"Reset"
+                    if(kb.enter()){
+                        this.reset();
+                        ui.endDeathMenu();
+                        runDeathMenu = false;
+                        runGame = true;
+                    }
+            }
+            System.out.println("BREAK");
+            Sys.warte(60);
+        }
+        deathMenuButtonNum = 1;
     }
 }

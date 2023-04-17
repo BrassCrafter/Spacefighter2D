@@ -12,6 +12,14 @@ public class SoundPlayer {
                         Clip clip = AudioSystem.getClip();
                         clip.open(audioIn);
                         clip.start();
+
+                        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+
+                        gainControl.setValue(gainControl.getValue() - 10.0f);
+
+
+
                     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                         e.printStackTrace();
                     }
@@ -29,6 +37,13 @@ public class SoundPlayer {
                     Clip clip = AudioSystem.getClip();
                     clip.open(audioIn);
                     clip.start();
+
+                    FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+
+
+                    gainControl.setValue(gainControl.getValue() - 10.0f);
+
+                    clip.loop(Clip.LOOP_CONTINUOUSLY);
                 } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                     e.printStackTrace();
                 }
@@ -53,4 +68,4 @@ public class SoundPlayer {
         });
         soundThread.start();
     }
-    }
+}

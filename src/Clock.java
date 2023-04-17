@@ -75,4 +75,7 @@ public class Clock {
     public int getTimeBasedScore(){
         return timeBasedScore;
     }
+    public void resetTimeBasedScore(){
+        timeBasedScore = 0;
+    }
 }

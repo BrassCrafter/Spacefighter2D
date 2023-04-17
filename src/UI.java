@@ -76,4 +76,30 @@ public class UI {
         int score = pScore + stopWatchClock.getTimeBasedScore();
         scoreBoard.setzeText("Score: " + score, 50);
     }
+    public void startDeathMenu(){
+        resetButton.setzeSichtbarkeit(true);
+        quitButton.setzeSichtbarkeit(true);
+        backButton.setzeSichtbarkeit(false);
+        resetButton.setzeTextur("src/img/ResetOn.png");
+    }
+    public void updateDeathMenu(int pButton){
+        switch(pButton){
+            case 0:
+                resetButton.setzeTextur("src/img/ResetOff.png");
+                quitButton.setzeTextur("src/img/QuitOn.png");
+                tempButton = pButton;
+                break;
+            case 1:
+                quitButton.setzeTextur("src/img/QuitOff.png");
+                break;
+        }
+
+    }
+    public void endDeathMenu(){
+        resetButton.setzeSichtbarkeit(false);
+        quitButton.setzeSichtbarkeit(false);
+    }
+    public void resetScore(){
+        stopWatchClock.resetTimeBasedScore();
+    }
 }
