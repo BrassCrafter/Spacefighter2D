@@ -2,6 +2,7 @@ import GLOOP.*;
 public class Laser {
     GLTafel laser;
     GLVektor vOffPosition, vPosition;
+    SoundPlayer laserPlayer;
     public void load(double pX, double pY, double pWidth, double pLength){
         vOffPosition = new GLVektor(pX, pY, 0);
         vPosition = new GLVektor(pX, pY, 0);
@@ -9,6 +10,7 @@ public class Laser {
         //vPosition.y = vOffPosition.y;
         laser = new GLTafel(pX, pY, 0, pWidth, pLength, "src/img/Laser.png");
         laser.setzeAutodrehung(true);
+        laserPlayer = new SoundPlayer("src/sounds/Laser Gun.wav", 0);
     }
     public void shoot(double pSpeed){
         if(!(vPosition.x == vOffPosition.x && vPosition.y == vOffPosition.y)){
@@ -22,6 +24,7 @@ public class Laser {
         laser.setzePosition(vOffPosition);
     }
     public void setPosition(double pX, double pY){
+        laserPlayer.run();
         vPosition.x = pX;
         vPosition.y = pY;
         laser.setzePosition(vPosition.x, vPosition.y, 0);

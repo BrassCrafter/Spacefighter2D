@@ -13,7 +13,7 @@ Ship ship;
 Astroid[] astroid;
 int astroidNum = 500;
 double maxHight = 450;
-SoundPlayer soundPlayer;
+SoundPlayer songPlayer;
 GLTastatur kb;
 Laser[] laser;
 UI ui;
@@ -42,8 +42,9 @@ int highScore;
         astroid = new Astroid[astroidNum];
         laser = new Laser[laserNum];
         ui = new UI();
-        soundPlayer = new SoundPlayer();
-        soundPlayer.playSong();
+        songPlayer = new SoundPlayer("src/sounds/Jane Street - TrackTribe.wav", 0);
+        songPlayer.run();
+
         highScoreFile = new TextFileReaderWriter("src/HighScore.txt");
         highScore = Integer.parseInt(highScoreFile.readScoreLine());
 
@@ -85,8 +86,6 @@ int highScore;
             if(gunTimer.coolDownOver() && kb.istGedrueckt(' ')){
                 gunTimer.resetCoolDown(50);
                 ship.shoot();
-                soundPlayer.playLaserSound();
-                //hier scheint er nicht rauszugehen
             }
             ship.fly();
             gunTimer.coolDown();
